@@ -3,7 +3,6 @@ package com.app.pillars.controller;
 import com.app.pillars.configure.jwt.JwtTokenProvider;
 import com.app.pillars.dto.JwtRequest;
 import com.app.pillars.dto.UserInfo;
-import com.app.pillars.service.jwt.JwtUserDetailsService;
 import com.app.pillars.service.jwt.UserService;
 import com.app.pillars.service.jwt.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +26,15 @@ public class Auth {
     @Autowired
     AuthenticationManager authenticationManager;
 
-    @Autowired
-    private JwtUserDetailsService jwtUserDetailsService;
+
 
 
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    @RequestMapping("/login")
-    @PostMapping
+
+    @PostMapping("/login")
     public ResponseEntity<?> auth( @RequestBody JwtRequest jwtRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(),

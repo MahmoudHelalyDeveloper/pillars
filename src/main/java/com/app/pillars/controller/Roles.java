@@ -18,15 +18,14 @@ public class Roles {
 
     @Autowired(required = true)
     DBConnection dbConnection;
-    @RequestMapping("/roles")
-    @GetMapping
+    @GetMapping("/roles")
     public String getName() throws SQLException {
         if(dbConnection.isConnected==false) {
             Connection connection = dbConnection.getConnection();
         }
         else
         {
-            String query = "SELECT * FROM user where id=5";
+            String query = "SELECT * FROM users where id=5";
 
             // create the java statement
             Statement st = dbConnection.connection.createStatement();

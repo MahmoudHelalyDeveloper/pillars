@@ -1,11 +1,9 @@
 package com.app.pillars.controller;
 
+import com.app.pillars.configure.exception.ResourceNotFoundException;
 import com.app.pillars.dto.UserDto;
 import com.app.pillars.model.User;
 import com.app.pillars.service.user.UserService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,8 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -40,9 +36,12 @@ public class UserController {
     }
 
     @GetMapping("/getUser")
-    public ResponseEntity<UserDto> getUser(@RequestParam("id") int id){
+    public ResponseEntity<UserDto> getUser(@RequestParam("id") int id) throws ResourceNotFoundException {
 
         UserDto user = this.User.getUser(id);
+        if(user==null){
+            throw new ResourceNotFoundException("user is not found");
+        }
         return new ResponseEntity(user, HttpStatus.OK);
     }
 

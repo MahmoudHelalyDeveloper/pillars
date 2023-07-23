@@ -18,8 +18,7 @@ public class TestController {
 
     @Autowired(required = true)
     DBConnection dbConnection;
-    @RequestMapping("/users")
-    @GetMapping
+    @GetMapping("/users")
     public String getName() throws SQLException {
         if(dbConnection.isConnected==false) {
             Connection connection = dbConnection.getConnection();

@@ -14,7 +14,7 @@ public class UserServiceImpl extends UserService {
 
     @Override
    public UserInfo authenticate(JwtRequest jwtRequest) {
-        User byUserNameAndPassword = userRepo.findByUserName(jwtRequest.getUsername());
+        User byUserNameAndPassword = userRepo.findByUserNameAndPassword(jwtRequest.getUsername(),jwtRequest.getPassword());
         UserInfo userInfo =new UserInfo(byUserNameAndPassword.getUserName(),byUserNameAndPassword.getPassword(),null);
         return userInfo;
 //    return null;

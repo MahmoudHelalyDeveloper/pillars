@@ -16,5 +16,7 @@ public interface UserRepo extends JpaRepository<User,Integer> {
 
     UserDto findProjectionById(int id);
 
+    User findByUserNameAndPassword(String userName,String password);
+
 
 }
