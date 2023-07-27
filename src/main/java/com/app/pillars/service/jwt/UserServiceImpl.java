@@ -7,6 +7,8 @@ import com.app.pillars.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class UserServiceImpl extends UserService {
     @Autowired
@@ -15,7 +17,7 @@ public class UserServiceImpl extends UserService {
     @Override
    public UserInfo authenticate(JwtRequest jwtRequest) {
         User byUserNameAndPassword = userRepo.findByUserNameAndPassword(jwtRequest.getUsername(),jwtRequest.getPassword());
-        UserInfo userInfo =new UserInfo(byUserNameAndPassword.getUserName(),byUserNameAndPassword.getPassword(),null);
+        UserInfo userInfo =new UserInfo(byUserNameAndPassword.getUserName(),byUserNameAndPassword.getPassword(),new ArrayList<>());
         return userInfo;
 //    return null;
     }

@@ -4,6 +4,8 @@ package com.app.pillars.configure.exception;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -54,6 +56,18 @@ public class ExceptionHandlerControllerAdvice {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public @ResponseBody ExceptionResponse handleMissingBodyException(final Exception exception,
                                                            final HttpServletRequest request) {
+
+        ExceptionResponse error = new ExceptionResponse();
+        error.setErrorMessage(exception.getMessage());
+        error.callerURL(request.getRequestURI());
+
+        return error;
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+    public @ResponseBody ExceptionResponse authenticationResponse(final Exception exception,
+                                                             final HttpServletRequest request) {
 
         ExceptionResponse error = new ExceptionResponse();
         error.setErrorMessage(exception.getMessage());

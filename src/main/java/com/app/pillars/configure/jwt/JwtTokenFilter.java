@@ -1,5 +1,7 @@
 package com.app.pillars.configure.jwt;
 
+import com.app.pillars.util.Constant;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,9 +14,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Component
 //@RequiredArgsConstructor
@@ -29,18 +33,24 @@ public class JwtTokenFilter    extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        final String authHeader = request.getHeader(Constant.TokenConstant.HEADER_STRING);
 
-        String token = jwtTokenProvider.resolveToken(request);
+        if (authHeader != null && authHeader.startsWith(Constant.TokenConstant.TOKEN_PREFIX)) {
 
-        if (token != null && jwtTokenProvider.validateToken(token)) {
+            String token = jwtTokenProvider.resolveToken(request);
+            String username = jwtTokenProvider.getUsernameFromToken(token);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(jwtTokenProvider.getUsername(token));
+            if (token != null && jwtTokenProvider.validateToken(token, userDetails)) {
 
-            UsernamePasswordAuthenticationToken authentication
-                    = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//            UserDetails userDetails = userDetailsService.loadUserByUsername(jwtTokenProvider.getUsername(token));
 
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                UsernamePasswordAuthenticationToken authentication
+                        = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
 
         filterChain.doFilter(request, response);

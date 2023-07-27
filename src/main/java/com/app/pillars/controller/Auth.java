@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,22 +28,22 @@ public class Auth {
     AuthenticationManager authenticationManager;
 
 
-
-
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> auth( @RequestBody JwtRequest jwtRequest) {
+    public ResponseEntity<?> auth(@RequestBody JwtRequest jwtRequest) throws AuthenticationException {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(),
                         jwtRequest.getPassword())
         );
-
+        UserInfo authenticate = this.userService.authenticate(jwtRequest);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtTokenProvider.createToken(authentication);
+        String jwt = jwtTokenProvider.generateToken(authenticate);
         return ResponseEntity.ok(jwt);
     }
 

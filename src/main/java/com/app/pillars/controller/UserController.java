@@ -8,9 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.naming.Name;
 
 @RestController
 @RequestMapping("/users")
@@ -20,16 +23,33 @@ public class UserController {
     private UserService User;
 
     @GetMapping("/getAllUsers")
-    public ResponseEntity<UserDto> getAllUser(@RequestParam("pageNo") int pageNo,@RequestParam("pageSize") int pageSize){
-        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+    public ResponseEntity<UserDto> getAllUser(@RequestParam(value = "pageNo", required = false) int pageNo, @RequestParam(value = "pageSize", required = false) int pageSize, @RequestParam(value = "orderBy", required = false) String orderBy, @RequestParam(value = "asc", required = false) boolean asc) {
+        Sort sort = null;
+        if (orderBy == null) {
+            sort = asc == true ? Sort.by("id").ascending() : Sort.by("id").descending();
+        } else {
+            sort = asc == true ? Sort.by(orderBy).ascending() : Sort.by(orderBy).descending();
+
+        }
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize,sort);
 
         Page<UserDto> all = this.User.findAll(pageable);
         return new ResponseEntity(all.getContent(), HttpStatus.OK);
     }
 
     @GetMapping("/AllUsers")
-    public ResponseEntity<UserDto> AllUser(@RequestParam("pageNo") int pageNo,@RequestParam("pageSize") int pageSize){
-        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+    public ResponseEntity<UserDto> AllUser(@RequestParam(value = "pageNo", required = false,defaultValue = "1") int pageNo , @RequestParam(value = "pageSize", required = false) Integer pageSize, @RequestParam(value = "orderBy", required = false) String orderBy, @RequestParam(value = "asc", required = false) boolean asc) {
+        Sort sort = null;
+        if (orderBy == null) {
+            sort = asc == true ? Sort.by("id").ascending() : Sort.by("id").descending();
+        } else {
+            sort = asc == true ? Sort.by(orderBy).ascending() : Sort.by(orderBy).descending();
+
+        }
+
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize,sort);
 
         Page<UserDto> all = this.User.findAll(pageable);
         return new ResponseEntity(all, HttpStatus.OK);
@@ -39,14 +59,14 @@ public class UserController {
     public ResponseEntity<UserDto> getUser(@RequestParam("id") int id) throws ResourceNotFoundException {
 
         UserDto user = this.User.getUser(id);
-        if(user==null){
+        if (user == null) {
             throw new ResourceNotFoundException("user is not found");
         }
         return new ResponseEntity(user, HttpStatus.OK);
     }
 
     @PostMapping("/addUser")
-    public ResponseEntity<User> addUser(@RequestBody User userDto){
+    public ResponseEntity<User> addUser(@RequestBody User userDto) {
 
         User user = new User();
         user.setId(userDto.getId());
@@ -60,7 +80,7 @@ public class UserController {
     }
 
     @PostMapping("/updateUser")
-    public ResponseEntity<User> updateUser(@RequestBody User userDto){
+    public ResponseEntity<User> updateUser(@RequestBody User userDto) {
 
         User user = new User();
         user.setId(userDto.getId());
@@ -74,7 +94,7 @@ public class UserController {
     }
 
     @GetMapping("/deleteUser")
-    public ResponseEntity<Boolean> deleteUser(@RequestParam("id") int id){
+    public ResponseEntity<Boolean> deleteUser(@RequestParam("id") int id) {
 
         boolean isDeleted = this.User.deleteUser(id);
         return new ResponseEntity(isDeleted, HttpStatus.OK);

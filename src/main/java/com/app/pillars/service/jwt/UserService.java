@@ -5,5 +5,5 @@ import com.app.pillars.dto.UserInfo;
 
 public abstract class UserService {
 
-   abstract UserInfo authenticate(JwtRequest jwtRequest);
+  public abstract UserInfo authenticate(JwtRequest jwtRequest);
 }
