@@ -9,6 +9,7 @@ import java.util.List;
 
 public abstract class UserService {
 
+
  public    abstract Page<UserDto> findAll(Pageable pageable);
 
     public  abstract UserDto getUser(int id);

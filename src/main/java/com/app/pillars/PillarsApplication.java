@@ -19,6 +19,7 @@ public class PillarsApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PillarsApplication.class, args);
+
 	}
 
 //	@Bean

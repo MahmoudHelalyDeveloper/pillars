@@ -5,6 +5,8 @@ import com.app.pillars.dto.JwtRequest;
 import com.app.pillars.dto.UserInfo;
 import com.app.pillars.service.jwt.UserService;
 import com.app.pillars.service.jwt.UserServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/auth/")
 public class Auth {
 
+    Logger logger = LoggerFactory.getLogger(Auth.class);
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -37,6 +40,8 @@ public class Auth {
 
     @PostMapping("/login")
     public ResponseEntity<?> auth(@RequestBody JwtRequest jwtRequest) throws AuthenticationException {
+        logger.info(" start auth ");
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(),
                         jwtRequest.getPassword())
@@ -44,6 +49,7 @@ public class Auth {
         UserInfo authenticate = this.userService.authenticate(jwtRequest);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtTokenProvider.generateToken(authenticate);
+        logger.info(" jwt = generated ");
         return ResponseEntity.ok(jwt);
     }
 

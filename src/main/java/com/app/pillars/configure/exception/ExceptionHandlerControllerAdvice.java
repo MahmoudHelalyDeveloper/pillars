@@ -1,7 +1,10 @@
 package com.app.pillars.configure.exception;
 
 
+import com.app.pillars.controller.UserController;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.AuthenticationException;
@@ -17,6 +20,8 @@ import java.sql.SQLException;
 @ControllerAdvice
 public class ExceptionHandlerControllerAdvice {
 
+    Logger logger = LoggerFactory.getLogger(ExceptionHandlerControllerAdvice.class);
+
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public @ResponseBody ExceptionResponse handleResourceNotFound(final ResourceNotFoundException exception,
@@ -25,7 +30,9 @@ public class ExceptionHandlerControllerAdvice {
         ExceptionResponse error = new ExceptionResponse();
         error.setErrorMessage(exception.getMessage());
         error.callerURL(request.getRequestURI());
+        logger.error(" error message {}",exception.getMessage());
 
+        exception.printStackTrace();
         return error;
     }
 
@@ -37,7 +44,9 @@ public class ExceptionHandlerControllerAdvice {
         ExceptionResponse error = new ExceptionResponse();
         error.setErrorMessage(exception.getMessage());
         error.callerURL(request.getRequestURI());
+        logger.error(" error message {}",exception.getMessage());
 
+        exception.printStackTrace();
         return error;
     }
 
@@ -49,7 +58,9 @@ public class ExceptionHandlerControllerAdvice {
         ExceptionResponse error = new ExceptionResponse();
         error.setErrorMessage(exception.getMessage());
         error.callerURL(request.getRequestURI());
+        logger.error(" error message {}",exception.getMessage());
 
+        exception.printStackTrace();
         return error;
     }
     @ExceptionHandler(HttpMessageNotReadableException.class)
@@ -60,7 +71,9 @@ public class ExceptionHandlerControllerAdvice {
         ExceptionResponse error = new ExceptionResponse();
         error.setErrorMessage(exception.getMessage());
         error.callerURL(request.getRequestURI());
+        logger.error(" error message {}",exception.getMessage());
 
+        exception.printStackTrace();
         return error;
     }
 
@@ -72,7 +85,9 @@ public class ExceptionHandlerControllerAdvice {
         ExceptionResponse error = new ExceptionResponse();
         error.setErrorMessage(exception.getMessage());
         error.callerURL(request.getRequestURI());
+        logger.error(" error message {}",exception.getMessage());
 
+        exception.printStackTrace();
         return error;
     }
     @ExceptionHandler(Exception.class)
@@ -83,7 +98,9 @@ public class ExceptionHandlerControllerAdvice {
         ExceptionResponse error = new ExceptionResponse();
         error.setErrorMessage(exception.getMessage());
         error.callerURL(request.getRequestURI());
+        logger.error(" error message {}",exception.getMessage());
 
+        exception.printStackTrace();
         return error;
     }
 }
