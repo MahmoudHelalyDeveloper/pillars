@@ -1,12 +1,18 @@
 package com.app.pillars.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 
 @Entity
 @Table(name = "users")
+@Setter
+@Getter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class User  extends BaseEntity {
 
-public class User {
 
     @Id
     private int id;
@@ -18,27 +24,4 @@ public class User {
     private String password;
 
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

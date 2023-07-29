@@ -118,7 +118,7 @@ public class UserController {
         user.setUserName(userDto.getUserName());
         user.setPassword(userDto.getPassword());
 
-        com.app.pillars.model.User user1 = this.User.addUser(user);
+        com.app.pillars.model.User user1 = this.User.updateUser(user);
 
 
         return new ResponseEntity(user1, HttpStatus.OK);

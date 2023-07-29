@@ -22,7 +22,7 @@ public class UserServiceImpl extends UserService {
    public UserInfo authenticate(JwtRequest jwtRequest) {
         logger.info("authenticate ");
         User byUserNameAndPassword = userRepo.findByUserNameAndPassword(jwtRequest.getUsername(),jwtRequest.getPassword());
-        UserInfo userInfo =new UserInfo(byUserNameAndPassword.getUserName(),byUserNameAndPassword.getPassword(),new ArrayList<>());
+        UserInfo userInfo =new UserInfo(byUserNameAndPassword.getId(),byUserNameAndPassword.getUserName(),byUserNameAndPassword.getPassword(),new ArrayList<>());
         return userInfo;
 //    return null;
     }

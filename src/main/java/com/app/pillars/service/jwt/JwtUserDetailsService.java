@@ -20,7 +20,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     public UserDetails  loadUserByUsername(String username) throws UsernameNotFoundException {
         com.app.pillars.model.User byUserName = userRepo.findByUserName(username);
         if (byUserName!=null) {
-            			return new User(username,byUserName.getPassword(), new ArrayList<>());
+            			return new UserInfo(byUserName.getId(),username,byUserName.getPassword(), new ArrayList<>());
 
         } else {
             throw new UsernameNotFoundException("User not found with username: " + username);
