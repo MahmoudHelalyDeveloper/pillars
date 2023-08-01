@@ -5,6 +5,7 @@ import com.app.pillars.dto.JwtRequest;
 import com.app.pillars.dto.UserInfo;
 import com.app.pillars.service.jwt.UserService;
 import com.app.pillars.service.jwt.UserServiceImpl;
+import com.app.pillars.util.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,7 @@ public class Auth {
         );
         UserInfo authenticate = this.userService.authenticate(jwtRequest);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        Constant.setLang(jwtRequest.getLang());
         String jwt = jwtTokenProvider.generateToken(authenticate);
         logger.info(" jwt = generated ");
         return ResponseEntity.ok(jwt);

@@ -8,5 +8,10 @@ public class Constant {
         public static final String HEADER_STRING = "Authorization";
 
     }
+    public static String langApp="fr";
+    public static String setLang(String lang){
+        langApp=lang;
+        return langApp;
+    }
 }
 
