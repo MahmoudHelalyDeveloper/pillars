@@ -2,6 +2,9 @@ package com.app.pillars.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Formula;
+
+import java.util.List;
 
 
 @Entity
@@ -11,7 +14,8 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User  extends BaseEntity {
+public class User extends BaseEntity {
+
 
 
     @Id
@@ -23,5 +27,40 @@ public class User  extends BaseEntity {
 
     private String password;
 
+    private String gender;
+
+    @Transient
+    public  String getGenderEn(){
+        return genderEn;
+    };
+
+    @Transient
+    public  String getGenderAr(){
+        return genderAr;
+    };
+
+    @Transient
+    public  String geGenderName(){
+        return genderName;
+    };
+
+
+    @Formula("")
+    private String genderName;
+
+    @Formula("(select t.name from transalte t where t.VALUE=gender and t.lang='en')")
+    private  String genderEn;
+
+
+    @Formula("(select t.name from transalte t where t.VALUE=gender and t.lang='ar')")
+    private  String genderAr;
+
+    @PostLoad
+    public void postload() {
+//        String lang = getsessionLangs();
+
+//            this.genderName = "helaly";
+        genderName=""+genderAr+"  0 "+genderEn;
+    }
 
 }

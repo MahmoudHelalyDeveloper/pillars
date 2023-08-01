@@ -7,4 +7,16 @@ public interface UserDto {
     String getPassword();
 
     String getUserName();
+
+    String getCreatedName();
+
+
+    String getGenderEn();
+
+    String getGenderAr();
+
+    String geGenderName();
+
+    String getUpdatedName();
+
 }
