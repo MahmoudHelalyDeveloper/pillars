@@ -39,14 +39,14 @@ public class User extends BaseEntity {
         return genderAr;
     };
 
-    @Transient
-    public  String geGenderName(){
-        return genderName;
-    };
+//    @Transient
+//    public  String geGenderName(){
+//        return genderName;
+//    };
 
 
-    @Formula("")
-    private String genderName;
+//    @Formula("")
+//    private String genderName;
 
     @Formula("(select t.name from transalte t where t.VALUE=gender and t.lang='en')")
     private  String genderEn;
@@ -55,12 +55,23 @@ public class User extends BaseEntity {
     @Formula("(select t.name from transalte t where t.VALUE=gender and t.lang='ar')")
     private  String genderAr;
 
+//    private String genderName=genderAr+genderEn;
+@Transient
+    public  String getGenderName(){
+         return  genderName;
+    }
+@Formula("gender")
+    private String genderName="";
+
+
+
     @PostLoad
     public void postload() {
 //        String lang = getsessionLangs();
 
 //            this.genderName = "helaly";
-        genderName=""+genderAr+"  0 "+genderEn;
+//        genderName=""+genderAr+"  0 "+genderEn;
+        genderName="H";
     }
 
 }
