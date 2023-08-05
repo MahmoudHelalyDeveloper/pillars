@@ -3,9 +3,12 @@ package com.app.pillars.service.user;
 import com.app.pillars.dto.UserDto;
 import com.app.pillars.model.User;
 import com.app.pillars.repo.UserRepo;
+import com.app.pillars.request.UserRequest;
+import com.app.pillars.spec.UserSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +22,7 @@ public class UserServiceImpl extends UserService {
 
 
     @Override
-  public   Page<UserDto> findAll(Pageable pageable) {
+    public Page<UserDto> findAll(Pageable pageable) {
         Page<UserDto> all = this.userRepo.findAllBy(pageable);
 
         return all;
@@ -32,33 +35,39 @@ public class UserServiceImpl extends UserService {
     }
 
     @Override
-    public  User addUser(User user) {
+    public User addUser(User user) {
         return this.userRepo.save(user);
     }
 
     @Override
-    public   User updateUser(User user) {
+    public User updateUser(User user) {
         return this.userRepo.save(user);
     }
 
     @Override
     public boolean deleteUser(int id) {
         User user = null;
-        boolean isDeleted=false;
+        boolean isDeleted = false;
         try {
             user = this.userRepo.findById(id).get();
             this.userRepo.delete(user);
-            isDeleted=true;
+            isDeleted = true;
         } catch (Exception e) {
-            isDeleted=false;
+            isDeleted = false;
 
         }
         return isDeleted;
     }
 
     @Override
-    public Page<UserDto> search(Pageable pageable,String searchValue) {
-        Page<UserDto> allByUserNameOrCreatedNameOrUpdatedName = this.userRepo.findAllByUserNameContainsOrUpdatedNameContainsOrGenderEnContainsOrGenderArContainsOrCreatedNameContains(pageable,searchValue,searchValue,searchValue,searchValue,searchValue);
+    public Page<UserDto> search(Pageable pageable, String searchValue) {
+        Page<UserDto> allByUserNameOrCreatedNameOrUpdatedName = this.userRepo.findAllByUserNameContainsOrUpdatedNameContainsOrGenderEnContainsOrGenderArContainsOrCreatedNameContains(pageable, searchValue, searchValue, searchValue, searchValue, searchValue);
         return allByUserNameOrCreatedNameOrUpdatedName;
+    }
+
+    @Override
+    public Page<User> advancedSearch(Specification<User> spec, Pageable pageable) {
+        Page<User> all = this.userRepo.findAll(spec, pageable);
+        return all;
     }
 }
