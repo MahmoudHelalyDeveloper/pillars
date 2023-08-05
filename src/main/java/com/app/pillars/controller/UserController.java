@@ -130,4 +130,35 @@ public class UserController {
         boolean isDeleted = this.User.deleteUser(id);
         return new ResponseEntity(isDeleted, HttpStatus.OK);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<UserDto> search(@RequestParam(value = "pageNo", required = false,defaultValue = "1") int pageNo , @RequestParam(value = "pageSize", required = false,defaultValue = "2147483647") int pageSize, @RequestParam(value = "orderBy", required = false) String orderBy, @RequestParam(value = "asc", required = false) boolean asc,@RequestParam(value = "", required = false) String searchBy ) {
+        logger.info("start get all users");
+//        logger.info("pageNo{},pageSize{},orderBy{},asc{}",pageNo,pageSize,orderBy,asc);
+
+        String userName = httpServletRequest.getUserPrincipal().getName();
+        logger.info("userName{}",userName);
+
+        Sort sort = null;
+        if (orderBy == null) {
+            logger.info("orderBy is null");
+
+            sort = asc == true ? Sort.by("id").ascending() : Sort.by("id").descending();
+        } else {
+            logger.info("orderBy is not null");
+
+            sort = asc == true ? Sort.by(orderBy).ascending() : Sort.by(orderBy).descending();
+
+        }
+
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize,sort);
+        logger.info("pageable is{}",pageable.toString());
+
+        Page<UserDto> all = this.User.search(pageable,searchBy);
+        logger.info("all is{}",all.toString());
+
+        return new ResponseEntity(all, HttpStatus.OK);
+    }
+
 }

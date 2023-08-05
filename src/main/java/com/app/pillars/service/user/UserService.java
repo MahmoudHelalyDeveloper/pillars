@@ -20,6 +20,9 @@ public abstract class UserService {
 
     public abstract boolean  deleteUser(int id);
 
+    public    abstract Page<UserDto> search(Pageable pageable,String searchValue);
+
+
 
 
 }

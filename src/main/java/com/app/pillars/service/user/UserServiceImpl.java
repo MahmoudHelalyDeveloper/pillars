@@ -55,4 +55,10 @@ public class UserServiceImpl extends UserService {
         }
         return isDeleted;
     }
+
+    @Override
+    public Page<UserDto> search(Pageable pageable,String searchValue) {
+        Page<UserDto> allByUserNameOrCreatedNameOrUpdatedName = this.userRepo.findAllByUserNameContainsOrUpdatedNameContainsOrGenderEnContainsOrGenderArContainsOrCreatedNameContains(pageable,searchValue,searchValue,searchValue,searchValue,searchValue);
+        return allByUserNameOrCreatedNameOrUpdatedName;
+    }
 }

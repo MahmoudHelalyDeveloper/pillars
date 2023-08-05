@@ -18,5 +18,7 @@ public interface UserRepo extends JpaRepository<User,Integer> {
 
     User findByUserNameAndPassword(String userName,String password);
 
+    Page<UserDto> findAllByUserNameContainsOrUpdatedNameContainsOrGenderEnContainsOrGenderArContainsOrCreatedNameContains(Pageable pageable,String userName,String updatedName,String genderEn,String genderAr,String createdName);
+
 
 }
