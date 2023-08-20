@@ -25,6 +25,8 @@ public class UserRequest {
 
     private String updatedName;
 
+    private  StudentRequest studentRequest;
+
     public int getId() {
         return id;
     }

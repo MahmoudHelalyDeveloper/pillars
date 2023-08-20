@@ -22,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @EntityListeners(AuditingEntityListener.class)
@@ -31,7 +32,7 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public  class BaseEntity {
+public  class BaseEntity   implements Serializable {
 
 
     @CreatedBy
